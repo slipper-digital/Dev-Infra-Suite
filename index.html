@@ -1,0 +1,1304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Developer Infrastructure Suite™ — 5 Professional Operating Systems</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0A0A0F;
+  --surface: #111118;
+  --border: #1E1E2E;
+  --text: #E8E8F0;
+  --muted: #8888A0;
+  --dbss: #C8962E;
+  --drrv: #D4401A;
+  --dcpo: #1B6CA8;
+  --ecs:  #2D6A4F;
+  --lcsk: #C97B2E;
+  --white: #FFFFFF;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+/* ── NOISE OVERLAY ── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 1000;
+  opacity: 0.4;
+}
+
+/* ── HERO ── */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 6rem 2rem 4rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(200,150,46,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(200,150,46,0.04) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+
+.hero-glow {
+  position: absolute;
+  width: 800px;
+  height: 800px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(200,150,46,0.06) 0%, transparent 70%);
+  top: -200px;
+  right: -200px;
+  pointer-events: none;
+}
+
+.hero-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 2;
+}
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(200,150,46,0.1);
+  border: 1px solid rgba(200,150,46,0.3);
+  border-radius: 100px;
+  padding: 6px 16px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--dbss);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: 2rem;
+}
+
+.hero-badge::before {
+  content: '';
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--dbss);
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(0.8); }
+}
+
+.hero h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(3rem, 7vw, 6rem);
+  font-weight: 900;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  margin-bottom: 1.5rem;
+}
+
+.hero h1 .line-2 {
+  display: block;
+  background: linear-gradient(135deg, var(--dbss) 0%, #E8B860 50%, var(--lcsk) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.hero-sub {
+  font-size: clamp(1rem, 2vw, 1.25rem);
+  color: var(--muted);
+  max-width: 680px;
+  margin-bottom: 3rem;
+  line-height: 1.7;
+}
+
+.hero-sub strong { color: var(--text); font-weight: 500; }
+
+.hero-cta-group {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 5rem;
+}
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: linear-gradient(135deg, var(--dbss), #E8B860);
+  color: #000;
+  font-weight: 700;
+  font-size: 15px;
+  padding: 14px 28px;
+  border-radius: 6px;
+  text-decoration: none;
+  transition: all 0.2s;
+  letter-spacing: 0.02em;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 32px rgba(200,150,46,0.4);
+}
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: transparent;
+  color: var(--text);
+  font-weight: 500;
+  font-size: 15px;
+  padding: 14px 28px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  text-decoration: none;
+  transition: all 0.2s;
+}
+
+.btn-secondary:hover {
+  border-color: var(--dbss);
+  color: var(--dbss);
+}
+
+/* ── STATS ROW ── */
+.stats-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.stat-cell {
+  background: var(--surface);
+  padding: 2rem;
+  text-align: center;
+}
+
+.stat-num {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.5rem;
+  font-weight: 900;
+  color: var(--dbss);
+  display: block;
+  line-height: 1;
+  margin-bottom: 0.5rem;
+}
+
+.stat-label {
+  font-size: 13px;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+/* ── SECTION ── */
+.section {
+  padding: 6rem 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.section-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--dbss);
+  margin-bottom: 1rem;
+}
+
+.section-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2rem, 4vw, 3.5rem);
+  font-weight: 900;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  margin-bottom: 1.5rem;
+}
+
+.section-body {
+  color: var(--muted);
+  font-size: 1.1rem;
+  max-width: 640px;
+  line-height: 1.7;
+}
+
+/* ── PROBLEM SECTION ── */
+.problem-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+  gap: 1.5rem;
+  margin-top: 4rem;
+}
+
+.problem-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 2rem;
+  position: relative;
+  overflow: hidden;
+  transition: border-color 0.3s;
+}
+
+.problem-card::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 3px;
+  background: var(--drrv);
+}
+
+.problem-card:hover { border-color: rgba(212,64,26,0.4); }
+
+.problem-number {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  color: var(--drrv);
+  letter-spacing: 0.1em;
+  margin-bottom: 0.75rem;
+}
+
+.problem-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+  color: var(--text);
+}
+
+.problem-desc {
+  font-size: 14px;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+.problem-cost {
+  display: inline-block;
+  margin-top: 1rem;
+  font-family: 'DM Mono', monospace;
+  font-size: 12px;
+  color: var(--drrv);
+  background: rgba(212,64,26,0.1);
+  padding: 4px 10px;
+  border-radius: 4px;
+}
+
+/* ── PRODUCTS GRID ── */
+.products-section {
+  padding: 6rem 2rem;
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+
+.products-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+  gap: 1.5rem;
+  margin-top: 4rem;
+}
+
+.product-card {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 2.5rem;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s;
+  cursor: pointer;
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+
+.product-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, var(--card-color, transparent) 0%, transparent 60%);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.product-card:hover {
+  border-color: var(--card-color, var(--border));
+  transform: translateY(-4px);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+}
+
+.product-card:hover::after { opacity: 0.05; }
+
+.product-num {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.product-num::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+.product-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  margin-bottom: 1.5rem;
+  flex-shrink: 0;
+}
+
+.product-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.4rem;
+  font-weight: 700;
+  line-height: 1.2;
+  margin-bottom: 0.5rem;
+}
+
+.product-tagline {
+  font-size: 13px;
+  color: var(--muted);
+  margin-bottom: 1.5rem;
+  font-style: italic;
+}
+
+.product-modules {
+  list-style: none;
+  margin-bottom: 2rem;
+}
+
+.product-modules li {
+  font-size: 13px;
+  color: var(--muted);
+  padding: 6px 0;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  gap: 8px;
+}
+
+.product-modules li::before {
+  content: '›';
+  color: var(--card-color);
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.product-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--card-color);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.product-link::after { content: '→'; }
+
+/* ── ADVANTAGE SECTION ── */
+.advantage-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  margin-top: 4rem;
+  align-items: start;
+}
+
+.advantage-list {
+  list-style: none;
+}
+
+.advantage-item {
+  display: flex;
+  gap: 1rem;
+  padding: 1.25rem 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.advantage-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  background: rgba(200,150,46,0.1);
+  border: 1px solid rgba(200,150,46,0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.advantage-text h4 {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 4px;
+  color: var(--text);
+}
+
+.advantage-text p {
+  font-size: 14px;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.comparison-table {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.comp-header {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  background: var(--border);
+  padding: 12px 16px;
+}
+
+.comp-header span {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.comp-header span:nth-child(2) { text-align: center; }
+.comp-header span:nth-child(3) { text-align: center; color: var(--dbss); }
+
+.comp-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--border);
+  align-items: center;
+}
+
+.comp-row:last-child { border-bottom: none; }
+
+.comp-row span { font-size: 13px; }
+.comp-row span:nth-child(2) { text-align: center; color: #E04444; }
+.comp-row span:nth-child(3) { text-align: center; color: #3ABF7A; font-weight: 600; }
+
+/* ── WHAT YOU GET ── */
+.deliverables-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.5rem;
+  margin-top: 4rem;
+}
+
+.deliverable-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.75rem;
+}
+
+.deliverable-count {
+  font-family: 'Playfair Display', serif;
+  font-size: 3rem;
+  font-weight: 900;
+  line-height: 1;
+  margin-bottom: 0.5rem;
+  background: linear-gradient(135deg, var(--dbss), #E8B860);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.deliverable-label {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.deliverable-desc {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+/* ── PRICING ── */
+.pricing-section {
+  padding: 6rem 2rem;
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+}
+
+.pricing-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.pricing-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+  margin-top: 4rem;
+}
+
+.price-card {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 2.5rem;
+  position: relative;
+  transition: all 0.3s;
+}
+
+.price-card.featured {
+  border-color: var(--dbss);
+  background: linear-gradient(135deg, rgba(200,150,46,0.06) 0%, var(--bg) 100%);
+}
+
+.featured-badge {
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(135deg, var(--dbss), #E8B860);
+  color: #000;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 16px;
+  border-radius: 100px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.price-name {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.price-desc {
+  font-size: 13px;
+  color: var(--muted);
+  margin-bottom: 1.5rem;
+  line-height: 1.5;
+}
+
+.price-amount {
+  font-family: 'Playfair Display', serif;
+  font-size: 3rem;
+  font-weight: 900;
+  line-height: 1;
+  margin-bottom: 0.25rem;
+}
+
+.price-amount span { font-size: 1.5rem; vertical-align: super; }
+
+.price-period {
+  font-size: 13px;
+  color: var(--muted);
+  margin-bottom: 2rem;
+}
+
+.price-features {
+  list-style: none;
+  margin-bottom: 2rem;
+}
+
+.price-features li {
+  font-size: 14px;
+  color: var(--muted);
+  padding: 8px 0;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  gap: 10px;
+  align-items: baseline;
+}
+
+.price-features li::before {
+  content: '✓';
+  color: #3ABF7A;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.btn-buy {
+  display: block;
+  text-align: center;
+  padding: 14px;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 15px;
+  text-decoration: none;
+  transition: all 0.2s;
+}
+
+.btn-buy-primary {
+  background: linear-gradient(135deg, var(--dbss), #E8B860);
+  color: #000;
+}
+
+.btn-buy-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 32px rgba(200,150,46,0.4);
+}
+
+.btn-buy-outline {
+  background: transparent;
+  color: var(--text);
+  border: 1px solid var(--border);
+}
+
+.btn-buy-outline:hover {
+  border-color: var(--dbss);
+  color: var(--dbss);
+}
+
+/* ── TESTIMONIAL / QUOTE ── */
+.quote-section {
+  padding: 6rem 2rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.quote-section::before {
+  content: '"';
+  position: absolute;
+  top: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: 'Playfair Display', serif;
+  font-size: 20rem;
+  font-weight: 900;
+  color: rgba(200,150,46,0.04);
+  line-height: 1;
+  pointer-events: none;
+  user-select: none;
+}
+
+.quote-inner {
+  max-width: 900px;
+  margin: 0 auto;
+  text-align: center;
+  position: relative;
+  z-index: 1;
+}
+
+.quote-text {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.5rem, 3vw, 2.5rem);
+  font-weight: 700;
+  line-height: 1.4;
+  color: var(--text);
+  margin-bottom: 2rem;
+}
+
+.quote-text em { color: var(--dbss); font-style: normal; }
+
+/* ── FOOTER / CTA ── */
+.final-cta {
+  padding: 8rem 2rem;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.final-cta::before {
+  content: '';
+  position: absolute;
+  width: 600px;
+  height: 600px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(200,150,46,0.08) 0%, transparent 70%);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+.final-cta-inner {
+  max-width: 700px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+
+.final-cta h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-weight: 900;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  margin-bottom: 1.5rem;
+}
+
+.final-cta p {
+  color: var(--muted);
+  font-size: 1.1rem;
+  margin-bottom: 3rem;
+  line-height: 1.7;
+}
+
+/* ── NAV ── */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  padding: 1rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(10,10,15,0.85);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+.nav-logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text);
+  text-decoration: none;
+}
+
+.nav-logo span { color: var(--dbss); }
+
+.nav-links {
+  display: flex;
+  gap: 2rem;
+  list-style: none;
+}
+
+.nav-links a {
+  font-size: 13px;
+  color: var(--muted);
+  text-decoration: none;
+  transition: color 0.2s;
+  font-weight: 500;
+}
+
+.nav-links a:hover { color: var(--text); }
+
+.nav-cta {
+  background: rgba(200,150,46,0.1);
+  border: 1px solid rgba(200,150,46,0.3);
+  color: var(--dbss) !important;
+  padding: 6px 16px;
+  border-radius: 6px;
+}
+
+/* ── DIVIDER ── */
+.divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border), transparent);
+  margin: 0 2rem;
+}
+
+/* ── ANIMATIONS ── */
+.fade-up {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.7s ease;
+}
+
+.fade-up.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (max-width: 768px) {
+  .stats-row { grid-template-columns: repeat(2, 1fr); }
+  .advantage-grid { grid-template-columns: 1fr; }
+  .nav-links { display: none; }
+  .comp-row span:first-child { font-size: 12px; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">Dev<span>Infra</span>Suite™</a>
+  <ul class="nav-links">
+    <li><a href="#products">The 5 Systems</a></li>
+    <li><a href="#advantage">Why This Works</a></li>
+    <li><a href="#deliverables">What You Get</a></li>
+    <li><a href="#pricing">Pricing</a></li>
+    <li><a href="#pricing" class="nav-cta">Get the Suite</a></li>
+  </ul>
+</nav>
+
+<!-- ── HERO ── -->
+<section class="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-content">
+    <div class="hero-badge">The Developer Infrastructure Suite™</div>
+    <h1>
+      Stop Losing Money<br>
+      <span class="line-2">to Missing Systems.</span>
+    </h1>
+    <p class="hero-sub">
+      Five professional operating systems that eliminate the <strong>non-coding problems</strong> costing developers $18,000–$150,000 per year. Not courses. Not guides. <strong>Deployable infrastructure</strong> you use the day you open it.
+    </p>
+    <div class="hero-cta-group">
+      <a href="#pricing" class="btn-primary">Get All 5 Systems →</a>
+      <a href="#products" class="btn-secondary">See What's Inside</a>
+    </div>
+  </div>
+
+  <div class="stats-row">
+    <div class="stat-cell">
+      <span class="stat-num">5</span>
+      <span class="stat-label">Complete Systems</span>
+    </div>
+    <div class="stat-cell">
+      <span class="stat-num">200+</span>
+      <span class="stat-label">Deployable Templates</span>
+    </div>
+    <div class="stat-cell">
+      <span class="stat-num">$45k</span>
+      <span class="stat-label">Avg. Annual Loss Prevented</span>
+    </div>
+    <div class="stat-cell">
+      <span class="stat-num">48h</span>
+      <span class="stat-label">Time to First Results</span>
+    </div>
+  </div>
+</section>
+
+<!-- ── PROBLEM ── -->
+<section class="section">
+  <p class="section-label fade-up">The Real Problem</p>
+  <h2 class="section-title fade-up">Developers Don't Lose Money<br>Writing Code. They Lose It Everywhere Else.</h2>
+  <p class="section-body fade-up">The technology industry moves fast. But the biggest stresses developers face have nothing to do with syntax, APIs, or frameworks. They happen when they aren't typing.</p>
+
+  <div class="problem-grid">
+    <div class="problem-card fade-up">
+      <div class="problem-number">PATTERN 01</div>
+      <h3 class="problem-title">Scope Creep & Underpricing</h3>
+      <p class="problem-desc">Quoting from instinct, caving at the first pushback, absorbing unpaid revisions because there's no written boundary system. Every project bleeds.</p>
+      <span class="problem-cost">$8,000–$22,000/yr in lost margin</span>
+    </div>
+    <div class="problem-card fade-up">
+      <div class="problem-number">PATTERN 02</div>
+      <h3 class="problem-title">Security Incidents & Compliance Chaos</h3>
+      <p class="problem-desc">A single exposed API key can cost $47,000. An unready SOC2 questionnaire can kill a $300,000 enterprise deal. Both are entirely preventable.</p>
+      <span class="problem-cost">$20,000–$500,000 per incident</span>
+    </div>
+    <div class="problem-card fade-up">
+      <div class="problem-number">PATTERN 03</div>
+      <h3 class="problem-title">Invisible Despite Strong Output</h3>
+      <p class="problem-desc">Technically excellent but professionally invisible. Can't articulate work in business terms. Passed over for promotion by someone who shipped less but documented more.</p>
+      <span class="problem-cost">$22,000–$60,000 in suppressed earnings</span>
+    </div>
+    <div class="problem-card fade-up">
+      <div class="problem-number">PATTERN 04</div>
+      <h3 class="problem-title">Structural Overload & Burnout</h3>
+      <p class="problem-desc">14 context switches before lunch. 47-alert Saturdays. Sprint rollover rates of 60%. The cognitive load is a performance problem, not a personal failing.</p>
+      <span class="problem-cost">$38,000/yr per developer at 60% capacity</span>
+    </div>
+    <div class="problem-card fade-up">
+      <div class="problem-number">PATTERN 05</div>
+      <h3 class="problem-title">Legacy Code Paralysis</h3>
+      <p class="problem-desc">Inheriting a 4,200-line helpers.js file with no tests. Leaving a system without documenting the 3am cron job. Making a $400,000 refactor decision without criteria.</p>
+      <span class="problem-cost">$30,000–$200,000 per undocumented departure</span>
+    </div>
+    <div class="problem-card fade-up">
+      <div class="problem-number">PATTERN 06</div>
+      <h3 class="problem-title">Directionless Skill Investment</h3>
+      <p class="problem-desc">200 hours learning the wrong technology. No framework for evaluating what to learn next. The opportunity cost is another developer's salary premium.</p>
+      <span class="problem-cost">$15,000 per misaligned learning cycle</span>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ── PRODUCTS ── -->
+<section class="products-section" id="products">
+  <div class="products-inner">
+    <p class="section-label fade-up">The Five Systems</p>
+    <h2 class="section-title fade-up">Not Content. Infrastructure.</h2>
+    <p class="section-body fade-up">Each system is a deployable operating system — templates, scripts, frameworks, checklists, and decision tools you use the day you open them. No courses to finish. No research required.</p>
+
+    <div class="products-grid">
+
+      <a href="dbss.html" class="product-card fade-up" style="--card-color: var(--dbss);">
+        <div class="product-num" style="color: var(--dbss);">01 / DBSS™</div>
+        <div class="product-icon" style="background: rgba(200,150,46,0.15); color: var(--dbss);">⚙</div>
+        <h3 class="product-name">Developer Business<br>Stability System™</h3>
+        <p class="product-tagline">Client Control · Revenue Protection · Delivery Excellence</p>
+        <ul class="product-modules">
+          <li>Pricing Architecture with Value Articulation Framework</li>
+          <li>Scope Control & Boundary System with 6 Scripts</li>
+          <li>Client Onboarding System & Kickoff Questionnaire</li>
+          <li>Communication Standards & Escalation Bank</li>
+          <li>Project Handover & Maintenance Retainer System</li>
+          <li>Documentation Engine & Completion Gate</li>
+        </ul>
+        <span class="product-link">View Product</span>
+      </a>
+
+      <a href="drrv.html" class="product-card fade-up" style="--card-color: var(--drrv);">
+        <div class="product-num" style="color: var(--drrv);">02 / DRRV™</div>
+        <div class="product-icon" style="background: rgba(212,64,26,0.15); color: var(--drrv);">🔐</div>
+        <h3 class="product-name">Developer Risk<br>Reduction Vault™</h3>
+        <p class="product-tagline">Eliminate Risk · Ship With Confidence · Win Enterprise Deals</p>
+        <ul class="product-modules">
+          <li>Secure Development Baseline Checklist (PASS/FAIL)</li>
+          <li>Git Hygiene + Pre-Commit Hook Script (deployable)</li>
+          <li>SOC2 Readiness Tracker & GDPR Compliance Checklist</li>
+          <li>20-Answer Security Questionnaire Vault</li>
+          <li>Incident Response Runbook (5 phases)</li>
+          <li>Blameless Postmortem Template with Worked Example</li>
+        </ul>
+        <span class="product-link" style="color: var(--drrv);">View Product</span>
+      </a>
+
+      <a href="dcpo.html" class="product-card fade-up" style="--card-color: var(--dcpo);">
+        <div class="product-num" style="color: var(--dcpo);">03 / DCPO™</div>
+        <div class="product-icon" style="background: rgba(27,108,168,0.15); color: var(--dcpo);">🎯</div>
+        <h3 class="product-name">Developer Career<br>Protection OS™</h3>
+        <p class="product-tagline">Own Your Career · Protect Your Income · Advance Fast</p>
+        <ul class="product-modules">
+          <li>Positioning Statement Formula (4 worked examples)</li>
+          <li>Impact Logging System & Brag Document</li>
+          <li>12 Resume Bullet Transformations (before/after)</li>
+          <li>Anti-Layoff Strategy & 90-Day Visibility Plan</li>
+          <li>Skill Value Assessment (8 technologies scored)</li>
+          <li>System Design Framework + 8 Behavioral Scripts</li>
+        </ul>
+        <span class="product-link" style="color: var(--dcpo);">View Product</span>
+      </a>
+
+      <a href="ecs.html" class="product-card fade-up" style="--card-color: var(--ecs);">
+        <div class="product-num" style="color: var(--ecs);">04 / ECS™</div>
+        <div class="product-icon" style="background: rgba(45,106,79,0.15); color: var(--ecs);">🌿</div>
+        <h3 class="product-name">Engineering<br>Calm Stack™</h3>
+        <p class="product-tagline">Focus · Control · Calm</p>
+        <ul class="product-modules">
+          <li>5-Dimension Burnout Scorecard (weekly, 5 min)</li>
+          <li>Deep Work Calendar Architecture (full week template)</li>
+          <li>Real Capacity Calculator (ends sprint rollover)</li>
+          <li>Async Communication Standard (team agreement)</li>
+          <li>Developer Priority Matrix (engineering-specific)</li>
+          <li>Context-Switch Audit & Task Batching System</li>
+        </ul>
+        <span class="product-link" style="color: var(--ecs);">View Product</span>
+      </a>
+
+      <a href="lcsk.html" class="product-card fade-up" style="--card-color: var(--lcsk);">
+        <div class="product-num" style="color: var(--lcsk);">05 / LCSK™</div>
+        <div class="product-icon" style="background: rgba(201,123,46,0.15); color: var(--lcsk);">⚠</div>
+        <h3 class="product-name">Legacy Code<br>Survival Kit™</h3>
+        <p class="product-tagline">Stabilize · Understand · Survive</p>
+        <ul class="product-modules">
+          <li>First 7 Days Protocol (day-by-day with signals)</li>
+          <li>Technical Risk Scorecard (6 dimensions scored)</li>
+          <li>Business Logic Documentation (5 full examples)</li>
+          <li>Refactor Decision Framework (3 scenarios applied)</li>
+          <li>Strangler Fig Implementation Guide</li>
+          <li>Emergency 4-Hour Handover Kit</li>
+        </ul>
+        <span class="product-link" style="color: var(--lcsk);">View Product</span>
+      </a>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── ADVANTAGE ── -->
+<section class="section" id="advantage">
+  <p class="section-label fade-up">The Incomparable Advantage</p>
+  <h2 class="section-title fade-up">The Industry Has Never Seen<br>This Before.</h2>
+
+  <div class="advantage-grid">
+    <ul class="advantage-list">
+      <li class="advantage-item fade-up">
+        <div class="advantage-icon">🏗</div>
+        <div class="advantage-text">
+          <h4>Infrastructure, Not Information</h4>
+          <p>Every other product in this market sells courses, guides, or templates. This suite delivers fully-built operating systems — templates written, scripts worded, checklists populated, frameworks applied to real examples. Open it and use it today.</p>
+        </div>
+      </li>
+      <li class="advantage-item fade-up">
+        <div class="advantage-icon">🎯</div>
+        <div class="advantage-text">
+          <h4>Attacks the Real Problem</h4>
+          <p>Developers don't lose money writing code. They lose it in scope, pricing, compliance, career management, and operational chaos. These five systems target the exact failure patterns that cost real money — not the theoretical ones.</p>
+        </div>
+      </li>
+      <li class="advantage-item fade-up">
+        <div class="advantage-icon">📊</div>
+        <div class="advantage-text">
+          <h4>Every Template Written. Every Script Worded.</h4>
+          <p>200+ fully-built assets: word-for-word negotiation scripts, complete policy documents, pre-commit hook code, SOC2 questionnaire answers, salary negotiation dialogue, legacy system runbooks. Zero blank pages to fill.</p>
+        </div>
+      </li>
+      <li class="advantage-item fade-up">
+        <div class="advantage-icon">⚡</div>
+        <div class="advantage-text">
+          <h4>48-Hour Deployment Path</h4>
+          <p>Each system includes a sequenced deployment plan — Day 1 (2 hours), Week 1 (foundation), Month 1 (fully operational) — with specific actions and measurable outcomes at each stage. No guesswork about where to start.</p>
+        </div>
+      </li>
+      <li class="advantage-item fade-up">
+        <div class="advantage-icon">🔬</div>
+        <div class="advantage-text">
+          <h4>Built on Research, Not Intuition</h4>
+          <p>23-minute context switch recovery time. 70% sprint commitment ceiling. 4-hour deep work ceiling. Every recommendation is grounded in documented research on knowledge worker performance, not motivational advice.</p>
+        </div>
+      </li>
+      <li class="advantage-item fade-up">
+        <div class="advantage-icon">♾</div>
+        <div class="advantage-text">
+          <h4>Permanent Infrastructure, Not Temporary Knowledge</h4>
+          <p>Deploy once. Run forever. The Pricing Calculator, Scope Definition Document, and Burnout Scorecard work on your next project, and the one after. These are reusable operating systems, not one-time reads.</p>
+        </div>
+      </li>
+    </ul>
+
+    <div class="comparison-table fade-up">
+      <div class="comp-header">
+        <span>Feature</span>
+        <span>Typical Product</span>
+        <span>This Suite</span>
+      </div>
+      <div class="comp-row">
+        <span>Templates pre-written</span>
+        <span>✗ Described only</span>
+        <span>✓ 200+ written out</span>
+      </div>
+      <div class="comp-row">
+        <span>Scripts word-for-word</span>
+        <span>✗ Strategy summaries</span>
+        <span>✓ Actual dialogue</span>
+      </div>
+      <div class="comp-row">
+        <span>Code assets included</span>
+        <span>✗ Rarely</span>
+        <span>✓ Pre-commit hooks, YAML</span>
+      </div>
+      <div class="comp-row">
+        <span>Examples populated</span>
+        <span>✗ Placeholder text</span>
+        <span>✓ Full worked examples</span>
+      </div>
+      <div class="comp-row">
+        <span>Deployment sequence</span>
+        <span>✗ "Implement as needed"</span>
+        <span>✓ Day 1, Week 1, Month 1</span>
+      </div>
+      <div class="comp-row">
+        <span>Research-backed numbers</span>
+        <span>✗ General advice</span>
+        <span>✓ Cited & specific</span>
+      </div>
+      <div class="comp-row">
+        <span>Notion-ready format</span>
+        <span>✗ PDF only</span>
+        <span>✓ PDF + Notion both</span>
+      </div>
+      <div class="comp-row">
+        <span>Both solo & team use</span>
+        <span>✗ One or the other</span>
+        <span>✓ Scales both ways</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ── DELIVERABLES ── -->
+<section class="section" id="deliverables">
+  <p class="section-label fade-up">What You Receive</p>
+  <h2 class="section-title fade-up">Everything You Need.<br>Nothing You Don't.</h2>
+
+  <div class="deliverables-grid">
+    <div class="deliverable-card fade-up">
+      <div class="deliverable-count">10</div>
+      <div class="deliverable-label">Production Files</div>
+      <p class="deliverable-desc">5 premium PDFs + 5 Notion-formatted markdown files. One for every system, ready to use in your preferred format.</p>
+    </div>
+    <div class="deliverable-card fade-up">
+      <div class="deliverable-count">200+</div>
+      <div class="deliverable-label">Deployable Templates</div>
+      <p class="deliverable-desc">Every template is populated with real example content — not placeholder text. See the standard, then adapt it in minutes.</p>
+    </div>
+    <div class="deliverable-card fade-up">
+      <div class="deliverable-count">50+</div>
+      <div class="deliverable-label">Word-for-Word Scripts</div>
+      <p class="deliverable-desc">From scope creep responses to salary negotiation dialogue to incident communication templates — the exact words to use.</p>
+    </div>
+    <div class="deliverable-card fade-up">
+      <div class="deliverable-count">30+</div>
+      <div class="deliverable-label">Decision Frameworks</div>
+      <p class="deliverable-desc">Scored, binary criteria for every significant decision — pricing, refactoring, skill investment, WIP limits, task priority.</p>
+    </div>
+    <div class="deliverable-card fade-up">
+      <div class="deliverable-count">15+</div>
+      <div class="deliverable-label">Deployable Code Assets</div>
+      <p class="deliverable-desc">Pre-commit hook scripts, GitHub Actions YAML workflows, deployment runbooks, and git command sequences — copy and deploy.</p>
+    </div>
+    <div class="deliverable-card fade-up">
+      <div class="deliverable-count">5</div>
+      <div class="deliverable-label">48-Hour Deployment Plans</div>
+      <p class="deliverable-desc">Each system includes a specific Day 1, Week 1, and Month 1 action plan. You know exactly what to do and in what order.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── QUOTE ── -->
+<section class="quote-section">
+  <div class="quote-inner">
+    <p class="quote-text">
+      "Developers do not buy fluff, motivation, or abstract promises. They buy <em>systems that reduce risk, save time, increase income, and restore control</em>."
+    </p>
+    <p style="color: var(--muted); font-size: 14px; letter-spacing: 0.1em; text-transform: uppercase;">The Design Principle Behind Every System in This Suite</p>
+  </div>
+</section>
+
+<!-- ── PRICING ── -->
+<section class="pricing-section" id="pricing">
+  <div class="pricing-inner">
+    <p class="section-label fade-up">Simple Pricing</p>
+    <h2 class="section-title fade-up">Choose Your Entry Point.</h2>
+    <p class="section-body fade-up">Every system stands alone. The full suite is the highest-leverage investment. One prevented scope incident recovers the cost of the entire suite.</p>
+
+    <div class="pricing-grid">
+
+      <div class="price-card fade-up">
+        <div class="price-name">Individual System</div>
+        <p class="price-desc">One system, one problem solved. Choose the one that addresses your most urgent pain point right now.</p>
+        <div class="price-amount"><span>$</span>197</div>
+        <p class="price-period">per system · lifetime access</p>
+        <ul class="price-features">
+          <li>Complete PDF (80–100 pages)</li>
+          <li>Notion-formatted companion file</li>
+          <li>All templates fully written</li>
+          <li>Deployment plan included</li>
+          <li>Lifetime access + updates</li>
+        </ul>
+        <a href="#products" class="btn-buy btn-buy-outline">Choose a System</a>
+      </div>
+
+      <div class="price-card featured fade-up">
+        <div class="featured-badge">Best Value</div>
+        <div class="price-name">The Full Suite</div>
+        <p class="price-desc">All 5 systems. The complete developer infrastructure. The highest-leverage investment you can make in your technical career or business.</p>
+        <div class="price-amount" style="background: linear-gradient(135deg, var(--dbss), #E8B860); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;"><span>$</span>797</div>
+        <p class="price-period">all 5 systems · lifetime access · <s style="color: var(--muted);">$985</s></p>
+        <ul class="price-features">
+          <li>All 5 complete systems (10 files)</li>
+          <li>200+ deployable templates</li>
+          <li>50+ word-for-word scripts</li>
+          <li>Deployable code assets</li>
+          <li>Lifetime access + all updates</li>
+          <li>Priority support access</li>
+        </ul>
+        <a href="#" class="btn-buy btn-buy-primary">Get the Full Suite →</a>
+      </div>
+
+      <div class="price-card fade-up">
+        <div class="price-name">Team License</div>
+        <p class="price-desc">For engineering teams, agencies, and technical leaders who want to deploy this infrastructure across their entire team.</p>
+        <div class="price-amount"><span>$</span>1,997</div>
+        <p class="price-period">up to 10 seats · lifetime access</p>
+        <ul class="price-features">
+          <li>All 5 systems for up to 10 people</li>
+          <li>Team-specific implementation guide</li>
+          <li>Onboarding call (60 min)</li>
+          <li>Customization consultation</li>
+          <li>Priority support channel</li>
+          <li>Lifetime access + updates</li>
+        </ul>
+        <a href="#" class="btn-buy btn-buy-outline">Contact for Teams</a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── FINAL CTA ── -->
+<section class="final-cta">
+  <div class="final-cta-inner">
+    <h2 class="fade-up">The Work Is Already Done.<br>Deploy It Today.</h2>
+    <p class="fade-up">200+ templates written. 50+ scripts worded. Every framework applied to real examples. You get the infrastructure — not a map to build your own.</p>
+    <div class="hero-cta-group" style="justify-content: center;">
+      <a href="#pricing" class="btn-primary">Get the Full Suite — $797 →</a>
+      <a href="#products" class="btn-secondary">Browse Individual Systems</a>
+    </div>
+  </div>
+</section>
+
+<footer style="padding: 3rem 2rem; border-top: 1px solid var(--border); text-align: center;">
+  <p style="color: var(--muted); font-size: 13px;">© Developer Infrastructure Suite™ · All Rights Reserved · Built for developers who want systems, not suggestions.</p>
+  <div style="display: flex; justify-content: center; gap: 2rem; margin-top: 1rem; flex-wrap: wrap;">
+    <a href="dbss.html" style="color: var(--dbss); font-size: 12px; text-decoration: none;">Business Stability System™</a>
+    <a href="drrv.html" style="color: var(--drrv); font-size: 12px; text-decoration: none;">Risk Reduction Vault™</a>
+    <a href="dcpo.html" style="color: var(--dcpo); font-size: 12px; text-decoration: none;">Career Protection OS™</a>
+    <a href="ecs.html" style="color: var(--ecs); font-size: 12px; text-decoration: none;">Engineering Calm Stack™</a>
+    <a href="lcsk.html" style="color: var(--lcsk); font-size: 12px; text-decoration: none;">Legacy Code Survival Kit™</a>
+  </div>
+</footer>
+
+<script>
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach((entry, i) => {
+    if (entry.isIntersecting) {
+      setTimeout(() => entry.target.classList.add('visible'), i * 80);
+    }
+  });
+}, { threshold: 0.1, rootMargin: '0px 0px -60px 0px' });
+
+document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>

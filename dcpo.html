@@ -1,0 +1,996 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Developer Career Protection OS™ — Developer Infrastructure Suite™</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --primary: #1B6CA8;
+  --primary-dark: #125088;
+  --primary-light: rgba(27,108,168,0.12);
+  --primary-border: rgba(27,108,168,0.3);
+  --accent2: #0D2137;
+  --bg: #07101A;
+  --surface: #0D1828;
+  --border: #142235;
+  --muted: #7090B0;
+  --text: #E0EAF5;
+  --white: #FFFFFF;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 1000;
+  opacity: 0.4;
+}
+
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  padding: 1rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(7,8,10,0.88);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  gap: 1rem;
+}
+
+.nav-logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text);
+  text-decoration: none;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.nav-logo span { color: var(--primary); }
+
+.nav-links {
+  display: flex;
+  gap: 1.5rem;
+  list-style: none;
+  flex-wrap: wrap;
+}
+
+.nav-links a {
+  font-size: 13px;
+  color: var(--muted);
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+.nav-links a:hover, .nav-links a.active { color: var(--primary); }
+
+.nav-suite {
+  font-size: 12px;
+  color: var(--primary);
+  border: 1px solid var(--primary-border);
+  background: var(--primary-light);
+  padding: 6px 14px;
+  border-radius: 6px;
+  text-decoration: none;
+  white-space: nowrap;
+  font-weight: 600;
+  transition: all 0.2s;
+}
+.nav-suite:hover { background: var(--primary); color: #000; }
+
+/* HERO */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 7rem 2rem 5rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-bg-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(var(--primary-light) 1px, transparent 1px),
+    linear-gradient(90deg, var(--primary-light) 1px, transparent 1px);
+  background-size: 50px 50px;
+  opacity: 0.5;
+}
+
+.hero-glow {
+  position: absolute;
+  width: 700px; height: 700px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(27,108,168,0.12) 0%, transparent 70%);
+  top: -150px; right: -150px;
+  pointer-events: none;
+}
+
+.hero-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: center;
+}
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--primary-light);
+  border: 1px solid var(--primary-border);
+  border-radius: 100px;
+  padding: 6px 16px;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--primary);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: 1.5rem;
+}
+
+.hero-badge::before {
+  content: '';
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--primary);
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity:1; transform:scale(1); }
+  50% { opacity:0.5; transform:scale(0.8); }
+}
+
+.hero h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2.5rem, 5vw, 4.5rem);
+  font-weight: 900;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  margin-bottom: 1.5rem;
+}
+
+.hero h1 em {
+  font-style: normal;
+  color: var(--primary);
+}
+
+.hero-sub {
+  font-size: 1.05rem;
+  color: var(--muted);
+  line-height: 1.7;
+  margin-bottom: 2.5rem;
+}
+
+.hero-sub strong { color: var(--text); font-weight: 500; }
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--primary);
+  color: #fff;
+  font-weight: 700;
+  font-size: 15px;
+  padding: 14px 28px;
+  border-radius: 6px;
+  text-decoration: none;
+  transition: all 0.2s;
+  margin-right: 1rem;
+  margin-bottom: 1rem;
+}
+
+.btn-primary:hover {
+  background: var(--primary-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 32px rgba(27,108,168,0.12);
+}
+
+.btn-outline {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: transparent;
+  color: var(--text);
+  font-weight: 500;
+  font-size: 15px;
+  padding: 14px 28px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  text-decoration: none;
+  transition: all 0.2s;
+  margin-bottom: 1rem;
+}
+
+.btn-outline:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+.hero-product-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 2.5rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-product-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: var(--primary);
+}
+
+.product-icon-large {
+  width: 64px; height: 64px;
+  border-radius: 16px;
+  background: var(--primary-light);
+  border: 1px solid var(--primary-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  margin-bottom: 1.5rem;
+}
+
+.product-code {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  color: var(--primary);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+}
+
+.product-name-large {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.6rem;
+  font-weight: 700;
+  line-height: 1.2;
+  margin-bottom: 0.5rem;
+}
+
+.product-tagline-card {
+  font-size: 13px;
+  color: var(--muted);
+  font-style: italic;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.quick-includes {
+  list-style: none;
+}
+
+.quick-includes li {
+  font-size: 13px;
+  color: var(--muted);
+  padding: 5px 0;
+  display: flex;
+  gap: 8px;
+  align-items: baseline;
+}
+
+.quick-includes li::before {
+  content: '›';
+  color: var(--primary);
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+/* STATS */
+.stats-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  max-width: 1200px;
+  margin: 0 auto 0;
+  gap: 1px;
+  background: var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+
+.stat-cell {
+  background: var(--surface);
+  padding: 1.75rem;
+  text-align: center;
+}
+
+.stat-num {
+  font-family: 'Playfair Display', serif;
+  font-size: 2rem;
+  font-weight: 900;
+  color: var(--primary);
+  display: block;
+  line-height: 1;
+  margin-bottom: 0.4rem;
+}
+
+.stat-label {
+  font-size: 12px;
+  color: var(--muted);
+  line-height: 1.4;
+}
+
+/* SECTIONS */
+.section {
+  padding: 5rem 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.section-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--primary);
+  margin-bottom: 1rem;
+}
+
+.section-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 900;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  margin-bottom: 1.5rem;
+}
+
+.section-body {
+  color: var(--muted);
+  font-size: 1.05rem;
+  max-width: 640px;
+  line-height: 1.7;
+  margin-bottom: 1rem;
+}
+
+.divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border), transparent);
+  margin: 0 2rem;
+}
+
+/* PAIN POINTS */
+.pain-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 1.5rem;
+  margin-top: 3rem;
+}
+
+.pain-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 2rem;
+  border-left: 3px solid var(--primary);
+  transition: border-color 0.3s;
+}
+
+.pain-card:hover { border-color: var(--primary); }
+
+.pain-title {
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+  color: var(--text);
+}
+
+.pain-desc {
+  font-size: 14px;
+  color: var(--muted);
+  line-height: 1.6;
+  margin-bottom: 1rem;
+}
+
+.pain-cost {
+  font-family: 'DM Mono', monospace;
+  font-size: 12px;
+  color: var(--primary);
+  background: var(--primary-light);
+  padding: 4px 10px;
+  border-radius: 4px;
+  display: inline-block;
+}
+
+/* MODULES */
+.modules-section {
+  padding: 5rem 2rem;
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+
+.modules-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.modules-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 1.5rem;
+  margin-top: 3rem;
+}
+
+.module-card {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 2rem;
+  transition: all 0.3s;
+}
+
+.module-card:hover {
+  border-color: var(--primary-border);
+  transform: translateY(-3px);
+}
+
+.module-num {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: 0.75rem;
+}
+
+.module-name {
+  font-size: 1.05rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: var(--text);
+}
+
+.module-items {
+  list-style: none;
+}
+
+.module-items li {
+  font-size: 13px;
+  color: var(--muted);
+  padding: 5px 0;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  gap: 8px;
+  align-items: baseline;
+}
+
+.module-items li::before {
+  content: '›';
+  color: var(--primary);
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.module-items li:last-child { border-bottom: none; }
+
+/* FOR WHO */
+.who-section {
+  padding: 5rem 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.who-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  margin-top: 3rem;
+  align-items: start;
+}
+
+.who-list {
+  list-style: none;
+}
+
+.who-item {
+  display: flex;
+  gap: 1rem;
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 15px;
+  color: var(--text);
+  align-items: baseline;
+}
+
+.who-check {
+  color: var(--primary);
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.results-box {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.results-header {
+  background: var(--primary);
+  padding: 1rem 1.5rem;
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #fff;
+}
+
+.results-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  background: var(--border);
+}
+
+.result-cell {
+  background: var(--bg);
+  padding: 1.5rem;
+  text-align: center;
+}
+
+.result-num {
+  font-family: 'Playfair Display', serif;
+  font-size: 2rem;
+  font-weight: 900;
+  color: var(--primary);
+  line-height: 1;
+  margin-bottom: 0.4rem;
+}
+
+.result-label {
+  font-size: 12px;
+  color: var(--muted);
+  line-height: 1.4;
+}
+
+/* PRICING */
+.pricing-section {
+  padding: 5rem 2rem;
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+}
+
+.pricing-inner {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.pricing-pair {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin-top: 3rem;
+}
+
+.price-card {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 2.5rem;
+  position: relative;
+}
+
+.price-card.featured {
+  border-color: var(--primary);
+  background: linear-gradient(135deg, var(--primary-light) 0%, var(--bg) 100%);
+}
+
+.featured-badge {
+  position: absolute;
+  top: -12px; left: 50%;
+  transform: translateX(-50%);
+  background: var(--primary);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 16px;
+  border-radius: 100px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.price-name { font-size: 1.1rem; font-weight: 700; margin-bottom: 0.5rem; }
+.price-desc { font-size: 13px; color: var(--muted); margin-bottom: 1.5rem; line-height: 1.5; }
+
+.price-amount {
+  font-family: 'Playfair Display', serif;
+  font-size: 3rem;
+  font-weight: 900;
+  color: var(--primary);
+  line-height: 1;
+  margin-bottom: 0.25rem;
+}
+
+.price-amount sup { font-size: 1.5rem; vertical-align: super; }
+.price-period { font-size: 13px; color: var(--muted); margin-bottom: 2rem; }
+
+.price-features { list-style: none; margin-bottom: 2rem; }
+.price-features li {
+  font-size: 14px;
+  color: var(--muted);
+  padding: 7px 0;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  gap: 10px;
+  align-items: baseline;
+}
+.price-features li::before { content: '✓'; color: #3ABF7A; font-weight: 700; flex-shrink: 0; }
+
+.btn-buy {
+  display: block;
+  text-align: center;
+  padding: 14px;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 15px;
+  text-decoration: none;
+  transition: all 0.2s;
+}
+
+.btn-buy-primary {
+  background: var(--primary);
+  color: #fff;
+}
+
+.btn-buy-primary:hover {
+  background: var(--primary-dark);
+  transform: translateY(-2px);
+}
+
+.btn-buy-outline {
+  background: transparent;
+  color: var(--text);
+  border: 1px solid var(--border);
+}
+
+.btn-buy-outline:hover { border-color: var(--primary); color: var(--primary); }
+
+/* FINAL CTA */
+.final-cta {
+  padding: 7rem 2rem;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.final-cta::before {
+  content: '';
+  position: absolute;
+  width: 600px; height: 600px;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--primary-light) 0%, transparent 70%);
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+.final-cta-inner {
+  max-width: 700px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+
+.final-cta h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2rem, 4vw, 3.5rem);
+  font-weight: 900;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  margin-bottom: 1.5rem;
+}
+
+.final-cta p {
+  color: var(--muted);
+  font-size: 1.05rem;
+  margin-bottom: 3rem;
+  line-height: 1.7;
+}
+
+footer {
+  padding: 3rem 2rem;
+  border-top: 1px solid var(--border);
+  text-align: center;
+}
+
+.fade-up {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: all 0.6s ease;
+}
+
+.fade-up.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (max-width: 768px) {
+  .hero-inner { grid-template-columns: 1fr; }
+  .hero-product-card { display: none; }
+  .stats-row { grid-template-columns: repeat(2, 1fr); }
+  .who-grid { grid-template-columns: 1fr; }
+  .pricing-pair { grid-template-columns: 1fr; }
+  .nav-links { display: none; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">Dev<span>Infra</span>Suite™</a>
+  <ul class="nav-links">
+    <li><a href="dbss.html">DBSS™</a></li><li><a href="drrv.html">DRRV™</a></li><li><a href="dcpo.html" class="active">DCPO™</a></li><li><a href="ecs.html">ECS™</a></li><li><a href="lcsk.html">LCSK™</a></li>
+  </ul>
+  <a href="index.html#pricing" class="nav-suite">Full Suite — $797</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg-grid"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-inner">
+    <div class="hero-left">
+      <div class="hero-badge">DCPO™ &nbsp;·&nbsp; System 03 of 05</div>
+      <h1>Technically Excellent.<br><em>Professionally Invisible.</em></h1>
+      <p class="hero-sub">The complete career survival, visibility, and advancement system for software developers. Positioning, promotion proof, resume, anti-layoff strategy, skill prioritization, and interview confidence — built into a single deployable OS.</p>
+      <a href="#pricing" class="btn-primary">Get Career Protection OS™ — $197 →</a>
+      <a href="#modules" class="btn-outline">See What's Inside</a>
+    </div>
+    <div class="hero-product-card">
+      <div class="product-icon-large">🎯</div>
+      <div class="product-code">DCPO™ &nbsp;·&nbsp; System 03 of 05</div>
+      <div class="product-name-large">Developer Career Protection OS™</div>
+      <div class="product-tagline-card">Own Your Career · Protect Your Income · Advance Fast</div>
+      <ul class="quick-includes">
+        <li>Professional Positioning System</li><li>Promotion Proof System</li><li>Resume & Portfolio System</li><li>Anti-Layoff Strategy System</li><li>Skill Prioritization System</li><li>Interview Confidence System</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- STATS BAR -->
+<div style="padding: 0 2rem; margin-top: -1px;">
+  <div class="stats-row">
+    <div class="stat-cell">
+      <span class="stat-num">$60k</span>
+      <span class="stat-label">Income gap from one missed senior promotion</span>
+    </div>
+    <div class="stat-cell">
+      <span class="stat-num">6</span>
+      <span class="stat-label">Career protection modules</span>
+    </div>
+    <div class="stat-cell">
+      <span class="stat-num">2 hrs</span>
+      <span class="stat-label">Day 1 deployment time</span>
+    </div>
+    <div class="stat-cell">
+      <span class="stat-num">12</span>
+      <span class="stat-label">Resume bullet transformations (before/after)</span>
+    </div>
+  </div>
+</div>
+
+<!-- DIAGNOSIS -->
+<section class="section">
+  <p class="section-label fade-up">The Real Problem</p>
+  <h2 class="section-title fade-up">Why This System Exists.</h2>
+  <p class="section-body fade-up">The developers using this system are not failing at their jobs. They are failing at being seen doing their jobs. They shipped 12 features last year and can't articulate any of them in business terms. Their resume describes what they did, not what they produced. Their name doesn't come up when strategic projects need a technical lead — not because of their skill, but because of their absence of professional infrastructure.</p>
+  <p class="section-body fade-up">Your career is an engineering problem. It has inputs, outputs, failure modes, and leverage points. This system instruments all of them.</p>
+
+  <div class="pain-grid">
+    
+        <div class="pain-card fade-up">
+          <div class="pain-title">Invisible Despite Strong Output</div>
+          <p class="pain-desc">Shipped 12 features. At review time, can't articulate any in business terms. A colleague who shipped less but documented more gets promoted instead.</p>
+          <span class="pain-cost">12–18 months of lost salary increase</span>
+        </div>
+        <div class="pain-card fade-up">
+          <div class="pain-title">Resume Describes Work, Not Value</div>
+          <p class="pain-desc">Laid off. Updates resume for the first time in 4 years. Every bullet says what they did, not what they produced. Loses to candidates who tell a better story.</p>
+          <span class="pain-cost">$15,000–$40,000 in suppressed starting salary</span>
+        </div>
+        <div class="pain-card fade-up">
+          <div class="pain-title">Freezing in Interviews</div>
+          <p class="pain-desc">Technically capable developer gets rejected. Can't perform system design under pressure despite excellent real-world ability. Accepts a lower offer elsewhere.</p>
+          <span class="pain-cost">$20,000–$60,000 lower annual compensation</span>
+        </div>
+        <div class="pain-card fade-up">
+          <div class="pain-title">Learning Everything, Mastering Nothing</div>
+          <p class="pain-desc">200 hours learning the wrong technology. No framework for evaluating what to learn next. The opportunity cost is another developer's salary premium.</p>
+          <span class="pain-cost">$15,000 per misaligned learning cycle</span>
+        </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- MODULES -->
+<section class="modules-section" id="modules">
+  <div class="modules-inner">
+    <p class="section-label fade-up">Inside the System</p>
+    <h2 class="section-title fade-up">Every Module. Fully Built.</h2>
+    <p class="section-body fade-up">Nothing described. Everything constructed. Templates written, scripts worded, frameworks applied to real examples — ready to deploy on the day you open the file.</p>
+
+    <div class="modules-grid">
+      
+        <div class="module-card fade-up">
+          <div class="module-num" style="color:#1B6CA8;">Module 01</div>
+          <h3 class="module-name">Professional Positioning System</h3>
+          <ul class="module-items"><li>5-dimension Positioning Diagnostic self-assessment</li><li>Positioning Statement Formula (4 worked examples)</li><li>Professional Narrative Architecture Framework</li><li>Visibility Footprint Plan (90 min/week max)</li></ul>
+        </div>
+        <div class="module-card fade-up">
+          <div class="module-num" style="color:#1B6CA8;">Module 02</div>
+          <h3 class="module-name">Promotion Proof System</h3>
+          <ul class="module-items"><li>Weekly Impact Logging System (10 min/Friday)</li><li>Complete Brag Document with worked example</li><li>Promotion Case Document (mid→senior example)</li><li>Promotion Conversation Script (word-for-word)</li></ul>
+        </div>
+        <div class="module-card fade-up">
+          <div class="module-num" style="color:#1B6CA8;">Module 03</div>
+          <h3 class="module-name">Resume & Portfolio System</h3>
+          <ul class="module-items"><li>12 before/after resume bullet transformations</li><li>Full Resume Structure Template with example</li><li>Project Case Study Framework (completed example)</li><li>GitHub Profile Optimization Standard</li></ul>
+        </div>
+        <div class="module-card fade-up">
+          <div class="module-num" style="color:#1B6CA8;">Module 04</div>
+          <h3 class="module-name">Anti-Layoff Strategy System</h3>
+          <ul class="module-items"><li>Career Moat Audit (5-dimension scored assessment)</li><li>90-Day Strategic Visibility Plan</li><li>Knowledge Documentation Strategy</li><li>Early Warning Detection System (4 signal categories)</li></ul>
+        </div>
+        <div class="module-card fade-up">
+          <div class="module-num" style="color:#1B6CA8;">Module 05</div>
+          <h3 class="module-name">Skill Prioritization System</h3>
+          <ul class="module-items"><li>Skill Value Assessment Framework (5 weighted dimensions)</li><li>8 technologies scored with full analysis</li><li>Learning Portfolio Framework by career stage</li><li>Technology Triage Decision Guide (5 scenarios)</li></ul>
+        </div>
+        <div class="module-card fade-up">
+          <div class="module-num" style="color:#1B6CA8;">Module 06</div>
+          <h3 class="module-name">Interview Confidence System</h3>
+          <ul class="module-items"><li>System Design Framework (2 full worked examples)</li><li>8 complete behavioral interview answers</li><li>4-week Technical Interview Preparation Protocol</li><li>5-script Salary Negotiation System</li></ul>
+        </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHO IT'S FOR + RESULTS -->
+<section class="who-section">
+  <p class="section-label fade-up">Who This Is For</p>
+  <h2 class="section-title fade-up">Built for Developers Who Want<br>Systems, Not Suggestions.</h2>
+
+  <div class="who-grid">
+    <ul class="who-list">
+      <li class="who-item"><span class="who-check">✓</span>Developers who feel undervalued despite strong technical output</li><li class="who-item"><span class="who-check">✓</span>Engineers preparing for their next promotion conversation</li><li class="who-item"><span class="who-check">✓</span>Developers updating their resume after 3+ years in the same role</li><li class="who-item"><span class="who-check">✓</span>Anyone whose job search is taking longer than it should</li><li class="who-item"><span class="who-check">✓</span>Developers who freeze in technical interviews despite real-world skill</li>
+      <li class="who-item"><span class="who-check">✓</span>Anyone tired of generic advice that requires months of implementation work before anything changes</li>
+    </ul>
+
+    <div class="results-box fade-up">
+      <div class="results-header">Measurable Results After Month 1</div>
+      <div class="results-grid">
+        
+        <div class="result-cell">
+          <div class="result-num">+40–60%</div>
+          <div class="result-label">Inbound recruiter contact quality after positioning update</div>
+        </div>
+        <div class="result-cell">
+          <div class="result-num">+$8–25k</div>
+          <div class="result-label">Additional salary from negotiation scripts</div>
+        </div>
+        <div class="result-cell">
+          <div class="result-num">Evidence-ready</div>
+          <div class="result-label">Promotion case within 30 days of deployment</div>
+        </div>
+        <div class="result-cell">
+          <div class="result-num">Interview</div>
+          <div class="result-label">Anxiety replaced by process within 4 weeks</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- PRICING -->
+<section class="pricing-section" id="pricing">
+  <div class="pricing-inner">
+    <p class="section-label fade-up">Pricing</p>
+    <h2 class="section-title fade-up">One Price. Permanent Infrastructure.</h2>
+    <p class="section-body fade-up">Buy once. Use on every project, every client, every sprint — forever. One prevented incident pays for the system many times over.</p>
+
+    <div class="pricing-pair">
+      <div class="price-card featured fade-up">
+        <div class="featured-badge">This System</div>
+        <div class="price-name">Career Protection OS™</div>
+        <p class="price-desc">The complete system. Every module, every template, every script. PDF and Notion formats both included.</p>
+        <div class="price-amount"><sup>$</sup>197</div>
+        <p class="price-period">lifetime access · immediate download</p>
+        <ul class="price-features">
+          <li>Complete PDF (6 modules, 80–100 pages)</li>
+          <li>Notion-formatted companion file</li>
+          <li>All templates fully written & populated</li>
+          <li>All scripts word-for-word</li>
+          <li>Deployment plan (Day 1, Week 1, Month 1)</li>
+          <li>Lifetime access + updates</li>
+        </ul>
+        <a href="#" class="btn-buy btn-buy-primary">Get Career Protection OS™ — $197 →</a>
+      </div>
+
+      <div class="price-card fade-up">
+        <div class="price-name">The Full Suite (5 Systems)</div>
+        <p class="price-desc">All 5 systems for the price of 4. The complete developer infrastructure — business, security, career, performance, and legacy.</p>
+        <div class="price-amount"><sup>$</sup>797</div>
+        <p class="price-period">all 5 systems · <s style="color:var(--muted);">$985 separately</s></p>
+        <ul class="price-features">
+          <li>All 5 complete systems (10 files)</li>
+          <li>200+ deployable templates</li>
+          <li>50+ word-for-word scripts</li>
+          <li>Deployable code assets included</li>
+          <li>Lifetime access + all future updates</li>
+          <li>Priority support access</li>
+        </ul>
+        <a href="index.html#pricing" class="btn-buy btn-buy-outline">Get the Full Suite →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FINAL CTA -->
+<section class="final-cta">
+  <div class="final-cta-inner">
+    <h2 class="fade-up">Open It Today.<br>Use It Today.</h2>
+    <p class="fade-up">Every template is written. Every script is worded. Every checklist is populated. You get infrastructure — not a map to build your own.</p>
+    <a href="#pricing" class="btn-primary">Get Career Protection OS™ — $197 →</a>
+    <a href="index.html#pricing" class="btn-outline">Get All 5 Systems</a>
+  </div>
+</section>
+
+<footer>
+  <p style="color: var(--muted); font-size: 13px; margin-bottom: 1rem;">© Developer Infrastructure Suite™ · All Rights Reserved</p>
+  <div style="display: flex; justify-content: center; gap: 1.5rem; flex-wrap: wrap;">
+    <a href="index.html" style="color: var(--muted); font-size: 12px; text-decoration: none;">← All Systems</a>
+    <a href="dbss.html" style="color: var(--primary); font-size: 12px; text-decoration: none;">DBSS™</a><a href="drrv.html" style="color: var(--primary); font-size: 12px; text-decoration: none;">DRRV™</a><a href="dcpo.html" style="color: var(--primary); font-size: 12px; text-decoration: none;">DCPO™</a><a href="ecs.html" style="color: var(--primary); font-size: 12px; text-decoration: none;">ECS™</a><a href="lcsk.html" style="color: var(--primary); font-size: 12px; text-decoration: none;">LCSK™</a>
+  </div>
+</footer>
+
+<script>
+const obs = new IntersectionObserver((entries) => {
+  entries.forEach((e, i) => {
+    if (e.isIntersecting) setTimeout(() => e.target.classList.add('visible'), i * 80);
+  });
+}, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+document.querySelectorAll('.fade-up').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>

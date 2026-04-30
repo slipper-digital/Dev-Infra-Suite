@@ -1,0 +1,996 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Engineering Calm Stack™ — Developer Infrastructure Suite™</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --primary: #2D6A4F;
+  --primary-dark: #1A4A35;
+  --primary-light: rgba(45,106,79,0.12);
+  --primary-border: rgba(45,106,79,0.3);
+  --accent2: #1B3A2D;
+  --bg: #080F0B;
+  --surface: #0E1A12;
+  --border: #14261A;
+  --muted: #70A080;
+  --text: #E0F0E8;
+  --white: #FFFFFF;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 1000;
+  opacity: 0.4;
+}
+
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  padding: 1rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(7,8,10,0.88);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  gap: 1rem;
+}
+
+.nav-logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text);
+  text-decoration: none;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.nav-logo span { color: var(--primary); }
+
+.nav-links {
+  display: flex;
+  gap: 1.5rem;
+  list-style: none;
+  flex-wrap: wrap;
+}
+
+.nav-links a {
+  font-size: 13px;
+  color: var(--muted);
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+.nav-links a:hover, .nav-links a.active { color: var(--primary); }
+
+.nav-suite {
+  font-size: 12px;
+  color: var(--primary);
+  border: 1px solid var(--primary-border);
+  background: var(--primary-light);
+  padding: 6px 14px;
+  border-radius: 6px;
+  text-decoration: none;
+  white-space: nowrap;
+  font-weight: 600;
+  transition: all 0.2s;
+}
+.nav-suite:hover { background: var(--primary); color: #000; }
+
+/* HERO */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 7rem 2rem 5rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-bg-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(var(--primary-light) 1px, transparent 1px),
+    linear-gradient(90deg, var(--primary-light) 1px, transparent 1px);
+  background-size: 50px 50px;
+  opacity: 0.5;
+}
+
+.hero-glow {
+  position: absolute;
+  width: 700px; height: 700px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(45,106,79,0.12) 0%, transparent 70%);
+  top: -150px; right: -150px;
+  pointer-events: none;
+}
+
+.hero-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: center;
+}
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--primary-light);
+  border: 1px solid var(--primary-border);
+  border-radius: 100px;
+  padding: 6px 16px;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--primary);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: 1.5rem;
+}
+
+.hero-badge::before {
+  content: '';
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--primary);
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity:1; transform:scale(1); }
+  50% { opacity:0.5; transform:scale(0.8); }
+}
+
+.hero h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2.5rem, 5vw, 4.5rem);
+  font-weight: 900;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  margin-bottom: 1.5rem;
+}
+
+.hero h1 em {
+  font-style: normal;
+  color: var(--primary);
+}
+
+.hero-sub {
+  font-size: 1.05rem;
+  color: var(--muted);
+  line-height: 1.7;
+  margin-bottom: 2.5rem;
+}
+
+.hero-sub strong { color: var(--text); font-weight: 500; }
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--primary);
+  color: #fff;
+  font-weight: 700;
+  font-size: 15px;
+  padding: 14px 28px;
+  border-radius: 6px;
+  text-decoration: none;
+  transition: all 0.2s;
+  margin-right: 1rem;
+  margin-bottom: 1rem;
+}
+
+.btn-primary:hover {
+  background: var(--primary-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 32px rgba(45,106,79,0.12);
+}
+
+.btn-outline {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: transparent;
+  color: var(--text);
+  font-weight: 500;
+  font-size: 15px;
+  padding: 14px 28px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  text-decoration: none;
+  transition: all 0.2s;
+  margin-bottom: 1rem;
+}
+
+.btn-outline:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+.hero-product-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 2.5rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-product-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: var(--primary);
+}
+
+.product-icon-large {
+  width: 64px; height: 64px;
+  border-radius: 16px;
+  background: var(--primary-light);
+  border: 1px solid var(--primary-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  margin-bottom: 1.5rem;
+}
+
+.product-code {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  color: var(--primary);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+}
+
+.product-name-large {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.6rem;
+  font-weight: 700;
+  line-height: 1.2;
+  margin-bottom: 0.5rem;
+}
+
+.product-tagline-card {
+  font-size: 13px;
+  color: var(--muted);
+  font-style: italic;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.quick-includes {
+  list-style: none;
+}
+
+.quick-includes li {
+  font-size: 13px;
+  color: var(--muted);
+  padding: 5px 0;
+  display: flex;
+  gap: 8px;
+  align-items: baseline;
+}
+
+.quick-includes li::before {
+  content: '›';
+  color: var(--primary);
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+/* STATS */
+.stats-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  max-width: 1200px;
+  margin: 0 auto 0;
+  gap: 1px;
+  background: var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+
+.stat-cell {
+  background: var(--surface);
+  padding: 1.75rem;
+  text-align: center;
+}
+
+.stat-num {
+  font-family: 'Playfair Display', serif;
+  font-size: 2rem;
+  font-weight: 900;
+  color: var(--primary);
+  display: block;
+  line-height: 1;
+  margin-bottom: 0.4rem;
+}
+
+.stat-label {
+  font-size: 12px;
+  color: var(--muted);
+  line-height: 1.4;
+}
+
+/* SECTIONS */
+.section {
+  padding: 5rem 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.section-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--primary);
+  margin-bottom: 1rem;
+}
+
+.section-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 900;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  margin-bottom: 1.5rem;
+}
+
+.section-body {
+  color: var(--muted);
+  font-size: 1.05rem;
+  max-width: 640px;
+  line-height: 1.7;
+  margin-bottom: 1rem;
+}
+
+.divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border), transparent);
+  margin: 0 2rem;
+}
+
+/* PAIN POINTS */
+.pain-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 1.5rem;
+  margin-top: 3rem;
+}
+
+.pain-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 2rem;
+  border-left: 3px solid var(--primary);
+  transition: border-color 0.3s;
+}
+
+.pain-card:hover { border-color: var(--primary); }
+
+.pain-title {
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+  color: var(--text);
+}
+
+.pain-desc {
+  font-size: 14px;
+  color: var(--muted);
+  line-height: 1.6;
+  margin-bottom: 1rem;
+}
+
+.pain-cost {
+  font-family: 'DM Mono', monospace;
+  font-size: 12px;
+  color: var(--primary);
+  background: var(--primary-light);
+  padding: 4px 10px;
+  border-radius: 4px;
+  display: inline-block;
+}
+
+/* MODULES */
+.modules-section {
+  padding: 5rem 2rem;
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+
+.modules-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.modules-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 1.5rem;
+  margin-top: 3rem;
+}
+
+.module-card {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 2rem;
+  transition: all 0.3s;
+}
+
+.module-card:hover {
+  border-color: var(--primary-border);
+  transform: translateY(-3px);
+}
+
+.module-num {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: 0.75rem;
+}
+
+.module-name {
+  font-size: 1.05rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: var(--text);
+}
+
+.module-items {
+  list-style: none;
+}
+
+.module-items li {
+  font-size: 13px;
+  color: var(--muted);
+  padding: 5px 0;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  gap: 8px;
+  align-items: baseline;
+}
+
+.module-items li::before {
+  content: '›';
+  color: var(--primary);
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.module-items li:last-child { border-bottom: none; }
+
+/* FOR WHO */
+.who-section {
+  padding: 5rem 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.who-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  margin-top: 3rem;
+  align-items: start;
+}
+
+.who-list {
+  list-style: none;
+}
+
+.who-item {
+  display: flex;
+  gap: 1rem;
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 15px;
+  color: var(--text);
+  align-items: baseline;
+}
+
+.who-check {
+  color: var(--primary);
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.results-box {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.results-header {
+  background: var(--primary);
+  padding: 1rem 1.5rem;
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #fff;
+}
+
+.results-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  background: var(--border);
+}
+
+.result-cell {
+  background: var(--bg);
+  padding: 1.5rem;
+  text-align: center;
+}
+
+.result-num {
+  font-family: 'Playfair Display', serif;
+  font-size: 2rem;
+  font-weight: 900;
+  color: var(--primary);
+  line-height: 1;
+  margin-bottom: 0.4rem;
+}
+
+.result-label {
+  font-size: 12px;
+  color: var(--muted);
+  line-height: 1.4;
+}
+
+/* PRICING */
+.pricing-section {
+  padding: 5rem 2rem;
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+}
+
+.pricing-inner {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.pricing-pair {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin-top: 3rem;
+}
+
+.price-card {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 2.5rem;
+  position: relative;
+}
+
+.price-card.featured {
+  border-color: var(--primary);
+  background: linear-gradient(135deg, var(--primary-light) 0%, var(--bg) 100%);
+}
+
+.featured-badge {
+  position: absolute;
+  top: -12px; left: 50%;
+  transform: translateX(-50%);
+  background: var(--primary);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 16px;
+  border-radius: 100px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.price-name { font-size: 1.1rem; font-weight: 700; margin-bottom: 0.5rem; }
+.price-desc { font-size: 13px; color: var(--muted); margin-bottom: 1.5rem; line-height: 1.5; }
+
+.price-amount {
+  font-family: 'Playfair Display', serif;
+  font-size: 3rem;
+  font-weight: 900;
+  color: var(--primary);
+  line-height: 1;
+  margin-bottom: 0.25rem;
+}
+
+.price-amount sup { font-size: 1.5rem; vertical-align: super; }
+.price-period { font-size: 13px; color: var(--muted); margin-bottom: 2rem; }
+
+.price-features { list-style: none; margin-bottom: 2rem; }
+.price-features li {
+  font-size: 14px;
+  color: var(--muted);
+  padding: 7px 0;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  gap: 10px;
+  align-items: baseline;
+}
+.price-features li::before { content: '✓'; color: #3ABF7A; font-weight: 700; flex-shrink: 0; }
+
+.btn-buy {
+  display: block;
+  text-align: center;
+  padding: 14px;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 15px;
+  text-decoration: none;
+  transition: all 0.2s;
+}
+
+.btn-buy-primary {
+  background: var(--primary);
+  color: #fff;
+}
+
+.btn-buy-primary:hover {
+  background: var(--primary-dark);
+  transform: translateY(-2px);
+}
+
+.btn-buy-outline {
+  background: transparent;
+  color: var(--text);
+  border: 1px solid var(--border);
+}
+
+.btn-buy-outline:hover { border-color: var(--primary); color: var(--primary); }
+
+/* FINAL CTA */
+.final-cta {
+  padding: 7rem 2rem;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.final-cta::before {
+  content: '';
+  position: absolute;
+  width: 600px; height: 600px;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--primary-light) 0%, transparent 70%);
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+.final-cta-inner {
+  max-width: 700px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+
+.final-cta h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2rem, 4vw, 3.5rem);
+  font-weight: 900;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  margin-bottom: 1.5rem;
+}
+
+.final-cta p {
+  color: var(--muted);
+  font-size: 1.05rem;
+  margin-bottom: 3rem;
+  line-height: 1.7;
+}
+
+footer {
+  padding: 3rem 2rem;
+  border-top: 1px solid var(--border);
+  text-align: center;
+}
+
+.fade-up {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: all 0.6s ease;
+}
+
+.fade-up.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (max-width: 768px) {
+  .hero-inner { grid-template-columns: 1fr; }
+  .hero-product-card { display: none; }
+  .stats-row { grid-template-columns: repeat(2, 1fr); }
+  .who-grid { grid-template-columns: 1fr; }
+  .pricing-pair { grid-template-columns: 1fr; }
+  .nav-links { display: none; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">Dev<span>Infra</span>Suite™</a>
+  <ul class="nav-links">
+    <li><a href="dbss.html">DBSS™</a></li><li><a href="drrv.html">DRRV™</a></li><li><a href="dcpo.html">DCPO™</a></li><li><a href="ecs.html" class="active">ECS™</a></li><li><a href="lcsk.html">LCSK™</a></li>
+  </ul>
+  <a href="index.html#pricing" class="nav-suite">Full Suite — $797</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg-grid"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-inner">
+    <div class="hero-left">
+      <div class="hero-badge">ECS™ &nbsp;·&nbsp; System 04 of 05</div>
+      <h1>14 Context Switches<br><em>Before Lunch.</em></h1>
+      <p class="hero-sub">The complete workload control and sustainable performance system for overloaded developers and engineering teams. Anti-burnout workflows, deep work protection, sprint planning from real capacity, async communication, and context-switch reduction — structurally installed.</p>
+      <a href="#pricing" class="btn-primary">Get Engineering Calm Stack™ — $197 →</a>
+      <a href="#modules" class="btn-outline">See What's Inside</a>
+    </div>
+    <div class="hero-product-card">
+      <div class="product-icon-large">🌿</div>
+      <div class="product-code">ECS™ &nbsp;·&nbsp; System 04 of 05</div>
+      <div class="product-name-large">Engineering Calm Stack™</div>
+      <div class="product-tagline-card">Focus · Control · Calm</div>
+      <ul class="quick-includes">
+        <li>Anti-Burnout Workflow System</li><li>Deep Work Operating System</li><li>Sprint Planning System</li><li>Async Communication System</li><li>Task Prioritization System</li><li>Context-Switch Reduction System</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- STATS BAR -->
+<div style="padding: 0 2rem; margin-top: -1px;">
+  <div class="stats-row">
+    <div class="stat-cell">
+      <span class="stat-num">23 min</span>
+      <span class="stat-label">Context switch recovery cost (Gloria Mark, UC Irvine)</span>
+    </div>
+    <div class="stat-cell">
+      <span class="stat-num">6</span>
+      <span class="stat-label">Performance modules</span>
+    </div>
+    <div class="stat-cell">
+      <span class="stat-num">Day 1</span>
+      <span class="stat-label">Measurable improvement begins</span>
+    </div>
+    <div class="stat-cell">
+      <span class="stat-num">29</span>
+      <span class="stat-label">Extra dev days/yr from meeting audit alone</span>
+    </div>
+  </div>
+</div>
+
+<!-- DIAGNOSIS -->
+<section class="section">
+  <p class="section-label fade-up">The Real Problem</p>
+  <h2 class="section-title fade-up">Why This System Exists.</h2>
+  <p class="section-body fade-up">The developers using this system are not lazy or disorganized. They are operating in environments designed for visibility and responsiveness — not for the sustained deep cognitive work that produces excellent software. 23-minute context switch recovery cost. 40% of attention consumed by Slack monitoring. 60% sprint rollover rates from planning at 100% of nominal capacity. These numbers represent structural failures, not personal ones.</p>
+  <p class="section-body fade-up">This is not a productivity course. It is a structural intervention that changes the default conditions of the work environment — so that high-quality engineering can actually happen.</p>
+
+  <div class="pain-grid">
+    
+        <div class="pain-card fade-up">
+          <div class="pain-title">The 9am Intention Collapse</div>
+          <p class="pain-desc">Sits down with a clear plan. By 9:47am: 6 Slack messages, 1 unscheduled standup (25 min over), 1 bug resolved by someone else. Zero meaningful code written. This is every day.</p>
+          <span class="pain-cost">3–4 hrs/day of intention destroyed</span>
+        </div>
+        <div class="pain-card fade-up">
+          <div class="pain-title">The 14-Sprint Rollover Loop</div>
+          <p class="pain-desc">Sprint planned at 40 points. By Wednesday: 12 unplanned points arrive. By Friday: 18 roll over. This has happened 14 consecutive sprints. The team has internalized it as evidence they are slow.</p>
+          <span class="pain-cost">60%+ rollover rate without the capacity calculator</span>
+        </div>
+        <div class="pain-card fade-up">
+          <div class="pain-title">The Slack Attention Tax</div>
+          <p class="pain-desc">Checks Slack every 3–6 minutes. Passive-aggressive comments trained this behavior. 40% of available attention consumed by monitoring. Best thinking happens 10pm–1am.</p>
+          <span class="pain-cost">40% attention loss × 220 days = 88 dev days/yr destroyed</span>
+        </div>
+        <div class="pain-card fade-up">
+          <div class="pain-title">Burnout Disguised as Busyness</div>
+          <p class="pain-desc">Always busy. Always stressed. Always underearning relative to hours worked. The cognitive depletion compounds until the quality of the work itself degrades.</p>
+          <span class="pain-cost">$38,000/yr per developer at 60% capacity</span>
+        </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- MODULES -->
+<section class="modules-section" id="modules">
+  <div class="modules-inner">
+    <p class="section-label fade-up">Inside the System</p>
+    <h2 class="section-title fade-up">Every Module. Fully Built.</h2>
+    <p class="section-body fade-up">Nothing described. Everything constructed. Templates written, scripts worded, frameworks applied to real examples — ready to deploy on the day you open the file.</p>
+
+    <div class="modules-grid">
+      
+        <div class="module-card fade-up">
+          <div class="module-num" style="color:#2D6A4F;">Module 01</div>
+          <h3 class="module-name">Anti-Burnout Workflow System</h3>
+          <ul class="module-items"><li>5-dimension Burnout Scorecard (weekly, 5 min)</li><li>Sustainable Work Design Protocol (specific numbers)</li><li>Friday Weekly Reset Ritual (30-min procedure)</li><li>4 overcommitment pushback scripts</li></ul>
+        </div>
+        <div class="module-card fade-up">
+          <div class="module-num" style="color:#2D6A4F;">Module 02</div>
+          <h3 class="module-name">Deep Work Operating System</h3>
+          <ul class="module-items"><li>Full-week Calendar Architecture template</li><li>Notification configuration for all platforms</li><li>Session Startup Ritual (5-min transition procedure)</li><li>WIP Limit System with board structure</li></ul>
+        </div>
+        <div class="module-card fade-up">
+          <div class="module-num" style="color:#2D6A4F;">Module 03</div>
+          <h3 class="module-name">Sprint Planning System</h3>
+          <ul class="module-items"><li>Real Capacity Calculator (individual + team versions)</li><li>Sprint Commitment Standard + mid-sprint scripts</li><li>Task Breakdown Protocol (2 worked examples)</li><li>Retrospective Engine (full 45-min agenda)</li></ul>
+        </div>
+        <div class="module-card fade-up">
+          <div class="module-num" style="color:#2D6A4F;">Module 04</div>
+          <h3 class="module-name">Async Communication System</h3>
+          <ul class="module-items"><li>Team Async Communication Standard (agreement doc)</li><li>5 complete message transformations (weak → strong)</li><li>Meeting Reduction Playbook (8-meeting audit example)</li><li>Written Decision Trail Standard + ADR template</li></ul>
+        </div>
+        <div class="module-card fade-up">
+          <div class="module-num" style="color:#2D6A4F;">Module 05</div>
+          <h3 class="module-name">Task Prioritization System</h3>
+          <ul class="module-items"><li>Developer Priority Matrix (engineering-specific quadrants)</li><li>Daily Planning Protocol (15-min procedure + example)</li><li>Weekly Backlog Triage Procedure</li><li>Reactive Work Containment System</li></ul>
+        </div>
+        <div class="module-card fade-up">
+          <div class="module-num" style="color:#2D6A4F;">Module 06</div>
+          <h3 class="module-name">Context-Switch Reduction System</h3>
+          <ul class="module-items"><li>1-week Context Switch Audit (tracking log + analysis)</li><li>Task Batching System (full weekly schedule)</li><li>Project Switching Protocol (close-down + startup rituals)</li><li>Single-Tasking Enforcement Protocol</li></ul>
+        </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHO IT'S FOR + RESULTS -->
+<section class="who-section">
+  <p class="section-label fade-up">Who This Is For</p>
+  <h2 class="section-title fade-up">Built for Developers Who Want<br>Systems, Not Suggestions.</h2>
+
+  <div class="who-grid">
+    <ul class="who-list">
+      <li class="who-item"><span class="who-check">✓</span>Developers who feel permanently behind despite working hard</li><li class="who-item"><span class="who-check">✓</span>Teams with chronic sprint rollover and unrealistic planning</li><li class="who-item"><span class="who-check">✓</span>Anyone whose best thinking happens after 10pm because the daytime is chaos</li><li class="who-item"><span class="who-check">✓</span>Engineering leads who need their team to deliver sustainably</li><li class="who-item"><span class="who-check">✓</span>Developers on the edge of burnout who need structural relief, not advice</li>
+      <li class="who-item"><span class="who-check">✓</span>Anyone tired of generic advice that requires months of implementation work before anything changes</li>
+    </ul>
+
+    <div class="results-box fade-up">
+      <div class="results-header">Measurable Results After Month 1</div>
+      <div class="results-grid">
+        
+        <div class="result-cell">
+          <div class="result-num">-60%</div>
+          <div class="result-label">Context switches per day after implementation</div>
+        </div>
+        <div class="result-cell">
+          <div class="result-num">3+ hrs</div>
+          <div class="result-label">Genuine deep work per day vs. 0.5–1.5hrs baseline</div>
+        </div>
+        <div class="result-cell">
+          <div class="result-num"><15%</div>
+          <div class="result-label">Sprint rollover rate vs. 40–60% without the system</div>
+        </div>
+        <div class="result-cell">
+          <div class="result-num">29 days</div>
+          <div class="result-label">Extra development capacity/yr from meeting audit alone</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- PRICING -->
+<section class="pricing-section" id="pricing">
+  <div class="pricing-inner">
+    <p class="section-label fade-up">Pricing</p>
+    <h2 class="section-title fade-up">One Price. Permanent Infrastructure.</h2>
+    <p class="section-body fade-up">Buy once. Use on every project, every client, every sprint — forever. One prevented incident pays for the system many times over.</p>
+
+    <div class="pricing-pair">
+      <div class="price-card featured fade-up">
+        <div class="featured-badge">This System</div>
+        <div class="price-name">Engineering Calm Stack™</div>
+        <p class="price-desc">The complete system. Every module, every template, every script. PDF and Notion formats both included.</p>
+        <div class="price-amount"><sup>$</sup>197</div>
+        <p class="price-period">lifetime access · immediate download</p>
+        <ul class="price-features">
+          <li>Complete PDF (6 modules, 80–100 pages)</li>
+          <li>Notion-formatted companion file</li>
+          <li>All templates fully written & populated</li>
+          <li>All scripts word-for-word</li>
+          <li>Deployment plan (Day 1, Week 1, Month 1)</li>
+          <li>Lifetime access + updates</li>
+        </ul>
+        <a href="#" class="btn-buy btn-buy-primary">Get Engineering Calm Stack™ — $197 →</a>
+      </div>
+
+      <div class="price-card fade-up">
+        <div class="price-name">The Full Suite (5 Systems)</div>
+        <p class="price-desc">All 5 systems for the price of 4. The complete developer infrastructure — business, security, career, performance, and legacy.</p>
+        <div class="price-amount"><sup>$</sup>797</div>
+        <p class="price-period">all 5 systems · <s style="color:var(--muted);">$985 separately</s></p>
+        <ul class="price-features">
+          <li>All 5 complete systems (10 files)</li>
+          <li>200+ deployable templates</li>
+          <li>50+ word-for-word scripts</li>
+          <li>Deployable code assets included</li>
+          <li>Lifetime access + all future updates</li>
+          <li>Priority support access</li>
+        </ul>
+        <a href="index.html#pricing" class="btn-buy btn-buy-outline">Get the Full Suite →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FINAL CTA -->
+<section class="final-cta">
+  <div class="final-cta-inner">
+    <h2 class="fade-up">Open It Today.<br>Use It Today.</h2>
+    <p class="fade-up">Every template is written. Every script is worded. Every checklist is populated. You get infrastructure — not a map to build your own.</p>
+    <a href="#pricing" class="btn-primary">Get Engineering Calm Stack™ — $197 →</a>
+    <a href="index.html#pricing" class="btn-outline">Get All 5 Systems</a>
+  </div>
+</section>
+
+<footer>
+  <p style="color: var(--muted); font-size: 13px; margin-bottom: 1rem;">© Developer Infrastructure Suite™ · All Rights Reserved</p>
+  <div style="display: flex; justify-content: center; gap: 1.5rem; flex-wrap: wrap;">
+    <a href="index.html" style="color: var(--muted); font-size: 12px; text-decoration: none;">← All Systems</a>
+    <a href="dbss.html" style="color: var(--primary); font-size: 12px; text-decoration: none;">DBSS™</a><a href="drrv.html" style="color: var(--primary); font-size: 12px; text-decoration: none;">DRRV™</a><a href="dcpo.html" style="color: var(--primary); font-size: 12px; text-decoration: none;">DCPO™</a><a href="ecs.html" style="color: var(--primary); font-size: 12px; text-decoration: none;">ECS™</a><a href="lcsk.html" style="color: var(--primary); font-size: 12px; text-decoration: none;">LCSK™</a>
+  </div>
+</footer>
+
+<script>
+const obs = new IntersectionObserver((entries) => {
+  entries.forEach((e, i) => {
+    if (e.isIntersecting) setTimeout(() => e.target.classList.add('visible'), i * 80);
+  });
+}, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+document.querySelectorAll('.fade-up').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>
